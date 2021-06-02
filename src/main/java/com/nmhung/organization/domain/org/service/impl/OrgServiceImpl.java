@@ -3,11 +3,14 @@ package com.nmhung.organization.domain.org.service.impl;
 import com.nmhung.organization.domain.org.model.Org;
 import com.nmhung.organization.domain.org.repository.OrgRepository;
 import com.nmhung.organization.domain.org.service.OrgService;
+import com.querydsl.core.BooleanBuilder;
+import com.querydsl.core.types.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Service
 public class OrgServiceImpl implements OrgService {
@@ -16,8 +19,9 @@ public class OrgServiceImpl implements OrgService {
     private OrgRepository repository;
 
     @Override
-    public List<Org> findAll() {
-        return repository.findAll();
+    public Page<Org> findAll(Predicate predicate, Pageable pageable) {
+        var builder = new BooleanBuilder();
+        return repository.search(builder.and(predicate), pageable);
     }
 
     @Override

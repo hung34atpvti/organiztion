@@ -2,16 +2,14 @@ package com.nmhung.organization.domain.org.dto;
 
 import com.nmhung.organization.common.dto.BaseDtoNew;
 import com.nmhung.organization.domain.org.model.Org;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+public final class OrgMapper {
+    private OrgMapper(){}
 
-@Component
-public class OrgMapper {
-
-    public Org toEntity (OrgDto dto) {
+    public static Org toEntity(OrgDto dto) {
         var entity = new Org();
         entity.setName(dto.getName());
         entity.setDescription(dto.getDescription());
@@ -19,7 +17,7 @@ public class OrgMapper {
         return entity;
     }
 
-    public OrgDtoNew toOrgDtoNew(Org org) {
+    public static OrgDtoNew toOrgDtoNew(Org org) {
         var dto = new OrgDtoNew();
         dto.setId(org.getId());
         dto.setName(org.getName());
@@ -36,7 +34,7 @@ public class OrgMapper {
         return dto;
     }
 
-    public List<OrgDtoNew> toListOrgDtoNew(List<Org> orgs){
-        return orgs.stream().map(this::toOrgDtoNew).collect(Collectors.toList());
+    public static List<OrgDtoNew> toListOrgDtoNew(List<Org> orgs) {
+        return orgs.stream().map(OrgMapper::toOrgDtoNew).collect(Collectors.toList());
     }
 }
