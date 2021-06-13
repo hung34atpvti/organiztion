@@ -14,7 +14,7 @@ public abstract class BaseController {
     public static final String SORT = "SORT";
 
     protected Pageable getPageable(int page, int limit, List<String> sort) {
-        String splitRegex = ",";
+        var splitRegex = ",";
         page = Math.max(page, 0);
         limit = limit <= 0 ? 20 : limit;
 

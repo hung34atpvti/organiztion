@@ -6,13 +6,20 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
+import java.util.Optional;
 
 
 public interface OrgService {
     Page<Org> findAll(Predicate predicate, Pageable pageable);
 
-    int countAll();
-
     Org create(Org org);
+
+    Org findById(Long id);
+
+    Org update(Long id, Org org);
+
+    Org softDelete(Long id);
+
+    boolean hardDelete(Long id);
 
 }
