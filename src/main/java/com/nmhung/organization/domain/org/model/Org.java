@@ -4,7 +4,11 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.nmhung.organization.common.model.BaseEntity;
 import lombok.Data;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotEmpty;
 import java.util.Objects;
 
@@ -12,7 +16,7 @@ import java.util.Objects;
 @Data
 @Table(name = "ORG", uniqueConstraints = {@UniqueConstraint(name = "UNQ_ORG_NAME_1", columnNames = {"NAME"})})
 @SequenceGenerator(name = "TABLE_SEQ", sequenceName = "SEQ_ORG_NAME", allocationSize = 1)
-@JsonIgnoreProperties(value = { "hibernateLazyInitializer" })
+@JsonIgnoreProperties(value = {"hibernateLazyInitializer"})
 public class Org extends BaseEntity {
     @Column(name = "NAME")
     @NotEmpty(message = "Organization Name {notBlank.message}")
