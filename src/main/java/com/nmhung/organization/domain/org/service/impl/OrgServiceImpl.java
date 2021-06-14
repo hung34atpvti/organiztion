@@ -48,15 +48,16 @@ public class OrgServiceImpl implements OrgService {
 
     @Override
     public Org update(Long id, Org org) {
-        this.throwIfNotExisted(id);
-        org.setId(id);
+        var orgNeedUpdate = this.findById(id);
+        orgNeedUpdate.setName(org.getName());
+        orgNeedUpdate.setAddress(org.getAddress());
+        orgNeedUpdate.setDescription(org.getDescription());
         return repository.save(org);
     }
 
     @Override
     public boolean softDelete(Long id) {
         var org = this.findById(id);
-        org.setId(id);
         org.setActiveInd(false);
         repository.save(org);
         var orgSaved = this.findById(id);
