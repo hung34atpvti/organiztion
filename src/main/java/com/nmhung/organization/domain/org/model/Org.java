@@ -6,6 +6,7 @@ import lombok.Data;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
+import java.util.Objects;
 
 @Entity
 @Data
@@ -26,10 +27,21 @@ public class Org extends BaseEntity {
 
     @Override
     public int hashCode() {
-        final int prime = 31;
-        int result = 1;
+        final var prime = 31;
+        var result = 1;
         result = prime * result + ((name == null) ? 0 : name.hashCode());
         result = prime * result + ((description == null) ? 0 : description.hashCode());
         return result;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+        var org = (Org) o;
+        return Objects.equals(name, org.name) &&
+                Objects.equals(description, org.description) &&
+                Objects.equals(address, org.address);
     }
 }
