@@ -6,6 +6,7 @@ import org.springframework.data.domain.Sort;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public abstract class BaseController {
 
@@ -20,13 +21,16 @@ public abstract class BaseController {
 
         List<Sort.Order> orders = new ArrayList<>();
         for (String order : sort) {
-            String sortField = order.split(splitRegex)[0];
-            String orderBy = order.split(splitRegex)[1];
-            if (orderBy == null || orderBy.isBlank() || orderBy.isEmpty()) {
+            String[] sortFieldAndOrderBy = order.split(splitRegex);
+            String sortField = sortFieldAndOrderBy[0];
+            if (Objects.isNull(sortField) || sortField.isEmpty() || sortField.isBlank() || !Objects.equals(2, sortFieldAndOrderBy.length)) {
+                break;
+            }
+            String orderBy = sortFieldAndOrderBy[1];
+            if (orderBy.isBlank() || orderBy.isEmpty()) {
                 orders.add(new Sort.Order(Sort.Direction.ASC, sortField));
             } else {
                 orders.add(new Sort.Order(orderBy.toUpperCase().contains("ASC") ? Sort.Direction.ASC : Sort.Direction.DESC, sortField));
-
             }
         }
         return PageRequest.of(page, limit, Sort.by(orders));
