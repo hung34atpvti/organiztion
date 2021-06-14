@@ -52,7 +52,7 @@ public class OrgServiceImpl implements OrgService {
         orgNeedUpdate.setName(org.getName());
         orgNeedUpdate.setAddress(org.getAddress());
         orgNeedUpdate.setDescription(org.getDescription());
-        return repository.save(org);
+        return repository.save(orgNeedUpdate);
     }
 
     @Override
