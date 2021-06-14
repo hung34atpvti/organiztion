@@ -15,7 +15,7 @@ public interface OrgService {
 
     Org update(Long id, Org org);
 
-    Org softDelete(Long id);
+    boolean softDelete(Long id);
 
     boolean hardDelete(Long id);
 

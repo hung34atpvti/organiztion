@@ -5,7 +5,6 @@ import com.nmhung.organization.domain.org.model.QOrg;
 import com.nmhung.organization.domain.org.repository.OrgRepository;
 import com.nmhung.organization.domain.org.service.OrgService;
 import com.nmhung.organization.exceptions.ErrorMessage;
-import com.querydsl.core.BooleanBuilder;
 import com.querydsl.core.types.Predicate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -25,13 +24,12 @@ public class OrgServiceImpl implements OrgService {
 
     @Override
     public Page<Org> findAll(Predicate predicate, Pageable pageable) {
-        var builder = new BooleanBuilder();
-        return repository.search(builder.and(predicate), pageable);
+        return repository.findAll(predicate, pageable);
     }
 
     @Override
     public Org create(Org org) {
-        if (this.isExisted(org.getName())){
+        if (this.isExisted(org.getName())) {
             throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, ErrorMessage.DUPLICATE_ORG_NAME);
         }
         org.setCreatedDate(LocalDateTime.now());
@@ -43,7 +41,7 @@ public class OrgServiceImpl implements OrgService {
     public Org findById(Long id) {
         var result = repository.findById(id).orElse(null);
         if (Objects.isNull(result)) {
-           this.throwIfNotExisted();
+            this.throwIfNotExisted();
         }
         return result;
     }
@@ -56,11 +54,13 @@ public class OrgServiceImpl implements OrgService {
     }
 
     @Override
-    public Org softDelete(Long id) {
+    public boolean softDelete(Long id) {
         var org = this.findById(id);
         org.setId(id);
         org.setActiveInd(false);
-        return repository.save(org);
+        repository.save(org);
+        var orgSaved = this.findById(id);
+        return Objects.equals(false, orgSaved.getActiveInd());
     }
 
     @Override
@@ -75,7 +75,7 @@ public class OrgServiceImpl implements OrgService {
     }
 
     private boolean isExisted(String orgName) {
-       return Objects.equals(repository.count(QOrg.org.name.equalsIgnoreCase(orgName)), 1L);
+        return Objects.equals(repository.count(QOrg.org.name.equalsIgnoreCase(orgName)), 1L);
     }
 
     private void throwIfNotExisted() {
