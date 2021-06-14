@@ -78,7 +78,7 @@ public class OrgController extends BaseController {
         if (type.equalsIgnoreCase("soft")) {
             return new ResponseEntity<>(service.softDelete(id), HttpStatus.OK);
         }
-        if (type.equalsIgnoreCase("hard")){
+        if (type.equalsIgnoreCase("hard")) {
             return new ResponseEntity<>(service.hardDelete(id), HttpStatus.OK);
         }
         throw new HttpClientErrorException(HttpStatus.BAD_REQUEST, ErrorMessage.WRONG_TYPE_DELETE);
